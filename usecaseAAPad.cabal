@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 99b33c968ce64066121d959a384b839f1c1c7f103720d1c83ce65d0ad8631192
+-- hash: 84472f0387469b38085cad9406c11b04c5f981ff81799ecfb2ea46c367b8925d
 
 name:           usecaseAAPad
 version:        0.1.0.0
@@ -27,14 +27,14 @@ source-repository head
 
 library
   exposed-modules:
-      Data.Automaton
       Data.Pad
   other-modules:
       Paths_usecaseAAPad
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5
+      automaton >=0.1
+    , base >=4.7 && <5
     , mtl >2.2
     , parsec >3
     , semigroupoids >5.3
@@ -50,7 +50,8 @@ executable usecaseAAPad-exe
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      automaton >=0.1
+    , base >=4.7 && <5
     , mtl >2.2
     , parsec >3
     , semigroupoids >5.3
@@ -69,7 +70,8 @@ test-suite Integration-test
       test
   ghc-options: -threaded
   build-depends:
-      base >=4.7 && <5
+      automaton >=0.1
+    , base >=4.7 && <5
     , mtl >2.2
     , parsec >3
     , semigroupoids >5.3
@@ -88,7 +90,8 @@ test-suite PAD-test
       test
   ghc-options: -threaded
   build-depends:
-      base >=4.7 && <5
+      automaton >=0.1
+    , base >=4.7 && <5
     , mtl >2.2
     , parsec >3
     , semigroupoids >5.3

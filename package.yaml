@@ -21,6 +21,7 @@ description:         Please see the README on GitHub at <https://github.com/L-So
 
 dependencies:
 - base >= 4.7 && < 5
+- automaton >= 0.1
 - mtl > 2.2
 - parsec > 3
 - semigroupoids > 5.3

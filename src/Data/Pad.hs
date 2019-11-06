@@ -8,9 +8,9 @@ import           Data.Text            (Text)
 import           Data.Text.Utils
 
 newtype PAD = PAD Text
-        deriving (Eq, Show)
+        deriving (Eq, Read, Show)
 newtype PASS = PASS Text
-        deriving (Eq, Show)
+        deriving (Eq, Read, Show)
 type PADID = Int
 
 type Log = Text
@@ -48,4 +48,5 @@ validate message pad = do tell message
 
 transmit :: PAD -> Report a
 transmit = undefined
+
 

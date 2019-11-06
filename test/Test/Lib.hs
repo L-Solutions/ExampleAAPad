@@ -10,7 +10,6 @@ module Test.Lib (
     -- export System.Exit.exitFailure
     , exitFailure
     -- export Control.Monad.Writer.tell
-    , tell
     ) where
 
 import           Control.Monad        (unless)

@@ -44,7 +44,7 @@ extra-deps:
 - git: https://github.com/L-Solutions/TextDecoration.git
   commit: 97ae0e7c3203a041056eaafc98092b91bec45bcc
 - git: https://github.com/L-Solutions/ActionAutomaton.git
-  commit: f8fe666843120ebd719f2d63ad022840791f4d56
+  commit: ff3af8fe4b135f69b7e5686f3e9d245dc5d75acb
 
 # Override default flag values for local packages and extra-deps
 # flags: {}

@@ -1,10 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-import           Control.Monad   ((>=>))
-
-import           Data.Text.Utils
-
+import           Control.Monad        ((>=>))
+import           Control.Monad.Writer (tell)
 import           Data.Pad
+import           Data.Text.Utils
 
 import           Test.Lib
 

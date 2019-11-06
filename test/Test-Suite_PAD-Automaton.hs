@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import           Control.Monad        (unless)
-import           Control.Monad.Writer (Writer (..), runWriter)
+import           Control.Monad.Writer (Writer (..), runWriter, tell)
 
 import           Data.Monoid          (getAll)
 import           Data.Text            (Text)
