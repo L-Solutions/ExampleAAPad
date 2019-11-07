@@ -45,28 +45,28 @@ logStart t = "Start with " <> t <> eol
 logFinish t = "End with " <> t <> eol
 
 -- Data.Automaton.syntacticAnalysis Wrap
-actionSyAn :: InArgs Text -> Diagnostic OutArgs
-actionSyAn (IN t (Left pad)) = syntacticAnalysis message pad >>= return . OutPASS
+actionSyAn :: InArgs Text -> Report OutArgs
+actionSyAn (IN t (Left pad)) = syntacticAnalysisWith message pad >>= return . OutPASS
     where message = logSyAnOk t
 actionSyAn (IN t _)          = tell message >> return (OutPASS Nothing)
     where message = logSyAnFail t
 
 -- Data.Automaton.staticAnalysis Wrap
-actionStAn :: InArgs Text -> Diagnostic OutArgs
-actionStAn (IN t (Right pass)) = staticAnalysis message pass >>= return . OutBool
+actionStAn :: InArgs Text -> Report OutArgs
+actionStAn (IN t (Right pass)) = staticAnalysisWith message pass >>= return . OutBool
     where message = logStAnOk t
 actionStAn (IN t _)          = tell message >> return (OutBool False)
     where message = logStAnFail t
 
-actionStart :: InArgs Text -> Diagnostic OutArgs
+actionStart :: InArgs Text -> Report OutArgs
 actionStart (IN t _) = tell message >> return OutUnit
     where message = logStart t
 
-actionFinish :: InArgs Text -> Diagnostic OutArgs
+actionFinish :: InArgs Text -> Report OutArgs
 actionFinish (IN t _) = tell message >> return OutUnit
     where message = logFinish t
 
-type StateDD = AutomatonState (InArgs Text) (Diagnostic OutArgs)
+type StateDD = AutomatonState (InArgs Text) (Report OutArgs)
 
 s0 :: StateDD
 s0 = AutomatonState "s0" actionStart
@@ -80,15 +80,15 @@ s2 = AutomatonState "s2" actionStAn
 s3 :: StateDD
 s3 = AutomatonState "s3" actionFinish
 
-type TransitionDD = AutomatonTransition (InArgs Text) (Diagnostic OutArgs)
+type TransitionDD = AutomatonTransition (InArgs Text) (Report OutArgs)
 
 -- valid
 iarg1 :: Text -> InArgs Text
-iarg1 label = IN label (Left (PAD label))
+iarg1 label = IN label (Left (PAD (label, "")))
 iarg2 :: Text -> InArgs Text
-iarg2 label = IN label (Right (PASS label))
+iarg2 label = IN label (Right (PASS (label, "")))
 iarg3 :: Text -> InArgs Text
-iarg3 label = IN label (Right (PASS label))
+iarg3 label = IN label (Right (PASS (label, "")))
 
 t1 :: Text -> TransitionDD
 t1 label = AutomatonTransition (label <> " PAD") s0 s1 $ mkGuardWithPAD label
@@ -110,16 +110,9 @@ mkGuard t1 (IN t2 _) = t1 == t2
 
 -- invalid
 iarg1' :: Text -> InArgs Text
-iarg1' label = IN label (Right (PASS label))
-iarg2' :: Text -> InArgs Text
-iarg2' label = IN label (Left (PAD label))
+iarg1' label = IN label (Right (PASS (label, "")))
 
-t1' :: Text -> TransitionDD
-t1' label = AutomatonTransition label s0 s1 (mkGuard label) -- s1 action will failed
-t2' :: Text -> TransitionDD
-t2' label = AutomatonTransition label s1 s2 (mkGuard label) -- s2 action will failed
-
-type AutomatonDD = Automaton (InArgs Text) (Diagnostic OutArgs)
+type AutomatonDD = Automaton (InArgs Text) (Report OutArgs)
 
 ts label = [t1,t2,t3] <*> [label]
 
@@ -146,15 +139,14 @@ test1 = mkTest "DD 1 state s0 -> s1" testDD1
 testDD1 = do let (out, aut') = runAutomaton (aex1 label) (aut0 label)
                  automatonCheck = aut' == (aut1 label)
                  diagnosticCheck = test out
-             tell $ withFG Blue "|" <> "   Automaton : " <> T.pack (show automatonCheck) <> eol
-             tell $ withFG Blue "|" <> "       aut = " <> pack (show aut') <> eol
-             tell $ withFG Blue "|" <> "   Diagnostic : " <> T.pack (show diagnosticCheck) <> eol
-             tell $ withFG Blue "|" <> "       out = " <> pack (show out) <> eol
+             tell $ withFG Blue "|" <> "     Automaton : " <> T.pack (show automatonCheck) <> eol
+             tell $ withFG Blue "|" <> "         aut = " <> pack (show aut') <> eol
+             tell $ withFG Blue "|" <> "        Report : " <> T.pack (show diagnosticCheck) <> eol
+             tell $ withFG Blue "|" <> "         out = " <> pack (show out) <> eol
              return $ automatonCheck && diagnosticCheck
     where label = "test1"
-          expectedLog = "read PAD : " <> label <> eol
-                      <> logSyAnOk label
-          expectedOut = OutPASS $ Just $ PASS $ "pass(" <> label <> ")"
+          expectedLog = logSyAnOk label
+          expectedOut = OutPASS $ Just $ PASS (label, "pass()")
           test (Produce w) = let (r, l) = runWriter w
                              in (l == expectedLog) && (r == expectedOut)
           test _ = False
@@ -165,12 +157,11 @@ testDD2 = do let (out, aut') = runAutomaton (aex2 label) (aut1 label)
                  diagnosticCheck = test out
              tell $ withFG Blue "|" <> "   Automaton : " <> T.pack (show automatonCheck) <> eol
              tell $ withFG Blue "|" <> "       aut = " <> pack (show aut') <> eol
-             tell $ withFG Blue "|" <> "   Diagnostic : " <> T.pack (show diagnosticCheck) <> eol
+             tell $ withFG Blue "|" <> "      Report : " <> T.pack (show diagnosticCheck) <> eol
              tell $ withFG Blue "|" <> "       out = " <> pack (show out) <> eol
              return $ automatonCheck && diagnosticCheck
     where label = "test2"
-          expectedLog = "read PASS : " <> label <> eol
-                      <> logStAnOk label
+          expectedLog = logStAnOk label
           expectedOut = OutBool True
           test (Produce w) = let (r, l) = runWriter w
                              in (l == expectedLog) && (r == expectedOut)
@@ -182,7 +173,7 @@ testDD3 = do let (out, aut') = runAutomaton (aex3 label) (aut2 label)
                  diagnosticCheck = test out
              tell $ withFG Blue "|" <> "   Automaton : " <> T.pack (show automatonCheck) <> eol
              tell $ withFG Blue "|" <> "       aut = " <> pack (show aut') <> eol
-             tell $ withFG Blue "|" <> "   Diagnostic : " <> T.pack (show diagnosticCheck) <> eol
+             tell $ withFG Blue "|" <> "      Report : " <> T.pack (show diagnosticCheck) <> eol
              tell $ withFG Blue "|" <> "       out = " <> pack (show out) <> eol
              return $ automatonCheck && diagnosticCheck
     where label = "test3"
@@ -198,7 +189,7 @@ testDD4 = do let (out, aut') = runAutomaton (aex1' label) (aut0 label)
                  diagnosticCheck = out == Failed
              tell $ withFG Blue "|" <> "   Automaton : " <> T.pack (show automatonCheck) <> eol
              tell $ withFG Blue "|" <> "       aut = " <> pack (show aut') <> eol
-             tell $ withFG Blue "|" <> "   Diagnostic : " <> T.pack (show diagnosticCheck) <> eol
+             tell $ withFG Blue "|" <> "      Report : " <> T.pack (show diagnosticCheck) <> eol
              tell $ withFG Blue "|" <> "       out = " <> pack (show out) <> eol
              return $ automatonCheck && diagnosticCheck
     where label = "test4"

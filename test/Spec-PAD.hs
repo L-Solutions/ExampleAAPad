@@ -3,8 +3,8 @@
 import           Control.Monad        ((>=>))
 import           Control.Monad.Writer (tell)
 import           Data.Pad
+import           Data.Text.Color
 import           Data.Text.Utils
-
 import           Test.Lib
 
 main :: IO ()
@@ -18,18 +18,20 @@ main = run test1 >> return ()
 
 test1 = mkTest "PAD 1 load -> validate" testPAD1
 
-testPAD1 = do let motPAD = "pad"
-                  motPASS = "pass(" <> motPAD <> ")"
+testPAD1 = do -- with
+              let thePAD = "pad"
+                  thePASS = "pass(" <> thePAD <> ")"
                   messageLoad = "loading" <> eol
                   messageValidate = "validating" <> eol
-                  expectedDiagnostic = "load PAD : " <> motPAD <> eol
-                                     <> messageLoad
+                  expectedDiagnostic =  messageLoad
                                      <> messageValidate
-                                     <> "read PAD : " <> motPAD <> eol
-                                     <> "read PASS : " <> motPASS <> eol
-              tell $ "load and validate"
-              let pad = PAD motPAD -- creating the PAD
+              tell $ "load and validate" <> eol
+              -- do
+              let pad = PAD ("guid", thePAD) -- creating the PAD
                   -- processing and acquiring
-                  diagnostic = getDiagnostic pad $ load messageLoad >=> validate messageValidate
+                  diagnostic = getReport pad $ loadWith messageLoad >=> validateWith messageValidate
+              tell $ withFG Blue "|" <> " Expected diagnostic : " <> expectedDiagnostic <> eol
+              tell $ withFG Blue "|" <> "          Diagnostic : " <> diagnostic <> eol
+              -- check
               return $ diagnostic == expectedDiagnostic
 

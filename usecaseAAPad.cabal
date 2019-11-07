@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 84472f0387469b38085cad9406c11b04c5f981ff81799ecfb2ea46c367b8925d
+-- hash: 8267d02bf3e30090cb1528f0be9168a58617ced47ab3a968e05e64437c2f817c
 
 name:           usecaseAAPad
 version:        0.1.0.0
@@ -45,6 +45,7 @@ library
 executable usecaseAAPad-exe
   main-is: Main.hs
   other-modules:
+      Example.Automaton1
       Paths_usecaseAAPad
   hs-source-dirs:
       app
