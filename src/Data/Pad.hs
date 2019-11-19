@@ -72,9 +72,16 @@ validateWith :: Monad m
              -> ReportT m Bool
 validateWith message pad = tell message >> validate pad
 
-transmit :: Monad m
-         => PAD
-         -> ReportT m a
-transmit = undefined
+transmitWith :: MonadIO m
+             => Log
+             -> PAD
+             -> ReportT m String
+transmitWith message pad = tell message >> transmit pad
 
+transmit :: MonadIO m
+         => PAD
+         -> ReportT m String
+transmit pad = do name <- liftIO getLine
+                  liftIO . writeFile name $ show pad
+                  return name
 
