@@ -4,9 +4,9 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 847c7b084b1024f3e2391667441d1f7ec85c5e5c2e4485ea9571f04b3b3b5a1e
+-- hash: 3093c49b3142229266f540693e3d3b2ddc3fe74960bc3eb4fb9582934845799f
 
-name:           usecaseAAPad
+name:           ExampleAAPad
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/L-Solutions/ExampleAAPad#readme>
 homepage:       https://github.com/L-Solutions/ExampleAAPad#readme
@@ -31,7 +31,7 @@ library
       Data.PadActions
       Data.Pass
   other-modules:
-      Paths_usecaseAAPad
+      Paths_ExampleAAPad
   hs-source-dirs:
       src
   build-depends:
@@ -44,24 +44,24 @@ library
     , textdecoration >=0.1
   default-language: Haskell2010
 
-executable usecaseAAPad-exe
+executable ExampleAAPad-exe
   main-is: Main.hs
   other-modules:
       Example.StartGoDoneGet
       Example.StartGoDoneGetIO
-      Paths_usecaseAAPad
+      Paths_ExampleAAPad
   hs-source-dirs:
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      automaton >=0.1
+      ExampleAAPad
+    , automaton >=0.1
     , base >=4.7 && <5
     , mtl >2.2
     , parsec >3
     , semigroupoids >5.3
     , text >1.2
     , textdecoration >=0.1
-    , usecaseAAPad
   default-language: Haskell2010
 
 test-suite Integration-test
@@ -69,19 +69,19 @@ test-suite Integration-test
   main-is: Test-Suite_PAD-Automaton.hs
   other-modules:
       Test.Lib
-      Paths_usecaseAAPad
+      Paths_ExampleAAPad
   hs-source-dirs:
       test
   ghc-options: -threaded
   build-depends:
-      automaton >=0.1
+      ExampleAAPad
+    , automaton >=0.1
     , base >=4.7 && <5
     , mtl >2.2
     , parsec >3
     , semigroupoids >5.3
     , text >1.2
     , textdecoration >=0.1
-    , usecaseAAPad
   default-language: Haskell2010
 
 test-suite PAD-test
@@ -89,17 +89,17 @@ test-suite PAD-test
   main-is: Spec-PAD.hs
   other-modules:
       Test.Lib
-      Paths_usecaseAAPad
+      Paths_ExampleAAPad
   hs-source-dirs:
       test
   ghc-options: -threaded
   build-depends:
-      automaton >=0.1
+      ExampleAAPad
+    , automaton >=0.1
     , base >=4.7 && <5
     , mtl >2.2
     , parsec >3
     , semigroupoids >5.3
     , text >1.2
     , textdecoration >=0.1
-    , usecaseAAPad
   default-language: Haskell2010

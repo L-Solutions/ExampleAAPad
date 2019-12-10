@@ -1,4 +1,4 @@
-name:                usecaseAAPad
+name:                ExampleAAPad
 version:             0.1.0.0
 github:              "L-Solutions/ExampleAAPad"
 license:             BSD3
@@ -32,7 +32,7 @@ library:
     source-dirs:    src
 
 executables:
-    usecaseAAPad-exe:
+    ExampleAAPad-exe:
         main:                Main.hs
         source-dirs:         app
         ghc-options:
@@ -40,7 +40,7 @@ executables:
         - -rtsopts
         - -with-rtsopts=-N
         dependencies:
-        - usecaseAAPad
+        - ExampleAAPad
 
 tests:
   PAD-test:
@@ -49,7 +49,7 @@ tests:
     ghc-options:
     - -threaded
     dependencies:
-    - usecaseAAPad
+    - ExampleAAPad
 
   Integration-test:
     main: Test-Suite_PAD-Automaton.hs
@@ -57,5 +57,5 @@ tests:
     ghc-options:
     - -threaded
     dependencies:
-    - usecaseAAPad
+    - ExampleAAPad
 
