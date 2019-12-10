@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 3093c49b3142229266f540693e3d3b2ddc3fe74960bc3eb4fb9582934845799f
+-- hash: 949ef9672cd7a79c280ddbd3754e87b37cce06b5653e3c556f71df2dcea9341f
 
 name:           ExampleAAPad
 version:        0.1.0.0
@@ -29,6 +29,7 @@ library
   exposed-modules:
       Data.Pad
       Data.PadActions
+      Data.Parser.Pad
       Data.Pass
   other-modules:
       Paths_ExampleAAPad

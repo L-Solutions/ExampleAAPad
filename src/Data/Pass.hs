@@ -2,8 +2,8 @@ module Data.Pass
     ( PASS
     , build
     , GUID
-    , Category
-    , Activity
+    , Category (..)
+    , Activity (..)
     , GUIDable (..)
     , activities
     , category

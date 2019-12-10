@@ -1,0 +1,1 @@
+PAD: 12\n    ACTIVITIES:\n        COUNT: 34\n        SELECTION: 56\n        EXTRACTION: 78
