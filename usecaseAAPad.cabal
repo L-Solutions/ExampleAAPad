@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e5f14dabd611b87907d5d9e5fda9967902ce7ecee23947bd7714fa3bb8ed2504
+-- hash: 847c7b084b1024f3e2391667441d1f7ec85c5e5c2e4485ea9571f04b3b3b5a1e
 
 name:           usecaseAAPad
 version:        0.1.0.0
@@ -28,6 +28,8 @@ source-repository head
 library
   exposed-modules:
       Data.Pad
+      Data.PadActions
+      Data.Pass
   other-modules:
       Paths_usecaseAAPad
   hs-source-dirs:

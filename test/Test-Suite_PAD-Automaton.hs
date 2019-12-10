@@ -10,7 +10,11 @@ import           Data.Text.Color
 import           Data.Text.Utils
 
 import           Data.Automaton
-import           Data.Pad
+import           Data.Pad             (PAD (..))
+import qualified Data.Pad             as PAD
+import           Data.PadActions
+import           Data.Pass            (PASS)
+import qualified Data.Pass            as PASS
 
 import           Test.Lib
 
@@ -86,9 +90,9 @@ type TransitionDD = AutomatonTransition (InArgs Text) (Report OutArgs)
 iarg1 :: Text -> InArgs Text
 iarg1 label = IN label (Left (PAD (label, "")))
 iarg2 :: Text -> InArgs Text
-iarg2 label = IN label (Right (PASS (label, "")))
+iarg2 label = IN label (Right (PASS.build label []))
 iarg3 :: Text -> InArgs Text
-iarg3 label = IN label (Right (PASS (label, "")))
+iarg3 label = IN label (Right (PASS.build label []))
 
 t1 :: Text -> TransitionDD
 t1 label = AutomatonTransition (label <> " PAD") s0 s1 $ mkGuardWithPAD label
@@ -110,7 +114,7 @@ mkGuard t1 (IN t2 _) = t1 == t2
 
 -- invalid
 iarg1' :: Text -> InArgs Text
-iarg1' label = IN label (Right (PASS (label, "")))
+iarg1' label = IN label (Right (PASS.build label []))
 
 type AutomatonDD = Automaton (InArgs Text) (Report OutArgs)
 
@@ -146,7 +150,7 @@ testDD1 = do let (out, aut') = runAutomaton (aex1 label) (aut0 label)
              return $ automatonCheck && diagnosticCheck
     where label = "test1"
           expectedLog = logSyAnOk label
-          expectedOut = OutPASS $ Just $ PASS (label, "pass()")
+          expectedOut = OutPASS $ Just $ PASS.build label []
           test (Produce w) = let (r, l) = runWriter w
                              in (l == expectedLog) && (r == expectedOut)
           test _ = False

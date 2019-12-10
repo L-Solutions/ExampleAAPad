@@ -14,7 +14,10 @@ import           Control.Monad
 import           Control.Monad.Writer (Writer (..), runWriter, tell)
 import           Data.Automaton       (Outcome (..))
 import qualified Data.Automaton       as A
-import           Data.Pad
+import           Data.Pad             (PAD (..))
+import qualified Data.Pad             as PAD
+import           Data.PadActions
+import qualified Data.Pass            as PASS
 import           Data.Text
 import           Data.Text.Utils
 import           Text.Read
@@ -24,7 +27,7 @@ import           Text.Read
 data InputType = Load | Validate | Report
   deriving (Show, Read, Eq)
 
-type InputArgs = Either PAD GUID
+type InputArgs = Either PAD PAD.GUID
 
 data Input = Input InputType InputArgs
   deriving (Show, Read, Eq)
@@ -32,8 +35,8 @@ data Input = Input InputType InputArgs
 mkInput :: String -> Maybe Input
 mkInput t = readMaybe $ "Input " ++ t
 
-data Output = Ok GUID
-            | Content Log
+data Output = Ok PAD.GUID
+            | Content PAD.Log
             | Error
             | Ko
   deriving (Show, Read, Eq)

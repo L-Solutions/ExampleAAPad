@@ -2,7 +2,11 @@
 
 import           Control.Monad        ((>=>))
 import           Control.Monad.Writer (tell)
-import           Data.Pad
+import           Data.Pad             (PAD (..))
+import qualified Data.Pad             as PAD
+import           Data.PadActions
+import           Data.Pass            (PASS)
+import qualified Data.Pass            as PASS
 import           Data.Text.Color
 import           Data.Text.Utils
 import           Test.Lib
