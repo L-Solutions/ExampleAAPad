@@ -18,3 +18,4 @@ loop mkInput aut = do putStrLn "Enter input :"
                                    print o
                                    loop mkInput newAut
 
+--
